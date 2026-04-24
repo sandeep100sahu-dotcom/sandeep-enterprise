@@ -1,0 +1,23 @@
+{
+  "overview": "A professional Steel Plant Store Web ERP for managing inventory, material inward/issue transactions, purchasing, repair tracking, machine history, and reporting. Role-based access for Admin, Store User, Purchase User, and Manager.",
+  "features": [
+    "Role-based login with 4 roles (Admin, Store User, Purchase User, Manager)",
+    "Dashboard with 8 live KPI cards and 3 trend charts",
+    "Item Master with full CRUD, photo upload, and technical specs",
+    "Material Inward (GRN) with auto stock increase and supplier ledger",
+    "Material Issue with 3 issue types and auto stock decrease",
+    "8 report types with Excel and PDF export",
+    "Admin Settings: users, roles, categories, company profile, audit logs"
+  ],
+  "category": "productivity",
+  "tags": [
+    "erp",
+    "inventory",
+    "steel-plant",
+    "warehouse",
+    "manufacturing",
+    "procurement",
+    "reports"
+  ],
+  "last_updated": "2026-04-24T15:04:21.313Z"
+}

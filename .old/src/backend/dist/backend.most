@@ -1,0 +1,193 @@
+// Version: 1.0.0
+type AuditLog__107614339 =
+  {
+    action : Text;
+    entityId : EntityId__892221652;
+    id : EntityId__892221652;
+    moduleName : Text;
+    newValue : Text;
+    oldValue : Text;
+    timestamp : Timestamp__301639476;
+    userId : Principal
+  };
+type Category__296027041 =
+  {
+    createdAt : Timestamp__301639476;
+    id : EntityId__892221652;
+    var name : Text;
+    var subcategories : [Text]
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type EntityId__892221652 = Nat;
+type ExternalBlob__671167343 = Blob;
+type GRNEntry__277754363 =
+  {
+    var challanNo : Text;
+    createdAt : Timestamp__301639476;
+    createdBy : Text;
+    date : Timestamp__301639476;
+    grnNo : Text;
+    id : EntityId__892221652;
+    var invoiceNo : Text;
+    items : [GRNLineItem__251961592];
+    var qcStatus : QCStatus__943160509;
+    var supplierId : EntityId__892221652
+  };
+type GRNLineItem__251961592 =
+  {
+    gstPercent : Float;
+    itemCode : Text;
+    itemId : EntityId__892221652;
+    qty : Nat;
+    rate : Float;
+    total : Float
+  };
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type IssueEntry__456880918 =
+  {
+    createdAt : Timestamp__301639476;
+    date : Timestamp__301639476;
+    var department : Text;
+    id : EntityId__892221652;
+    issueSlipNo : Text;
+    issueType : IssueType__1012334384;
+    issuedBy : Text;
+    items : [IssueLineItem__861619188];
+    var machineName : Text;
+    var purpose : Text;
+    var requestedBy : Text;
+    var status : Text
+  };
+type IssueLineItem__861619188 =
+  {itemCode : Text; itemId : EntityId__892221652; qty : Nat};
+type IssueType__1012334384 =
+  {#directConsumable; #emergencyBreakdown; #normal};
+type Item__531123396 =
+  {
+    var brand : Text;
+    var category : Text;
+    code : Text;
+    createdAt : Timestamp__301639476;
+    var currentStock : Nat;
+    var description : Text;
+    var gstHsn : Text;
+    id : EntityId__892221652;
+    var isActive : Bool;
+    var lastPurchaseRate : Float;
+    var minimumStock : Nat;
+    var name : Text;
+    var photo : ?ExternalBlob__671167343;
+    var preferredSupplier : Text;
+    var rackLocation : Text;
+    var size : Text;
+    var subcategory : Text;
+    var unit : Text;
+    var updatedAt : Timestamp__301639476
+  };
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type QCStatus__943160509 = {#approved; #pending; #rejected};
+type Role__300349085 = {#admin; #manager; #purchaseUser; #storeUser};
+type StockTransaction__698148207 =
+  {
+    balanceAfter : Nat;
+    createdAt : Timestamp__301639476;
+    id : EntityId__892221652;
+    itemId : EntityId__892221652;
+    qty : Nat;
+    refId : EntityId__892221652;
+    transactionType : TransactionType__430720328
+  };
+type Supplier__775988836 =
+  {
+    var address : Text;
+    var contactPerson : Text;
+    createdAt : Timestamp__301639476;
+    var email : Text;
+    var gstin : Text;
+    id : EntityId__892221652;
+    var ledgerBalance : Float;
+    var name : Text;
+    var phone : Text
+  };
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type Timestamp__301639476 = Time__900049286;
+type TransactionType__430720328 = {#inward; #issue};
+type UserProfile__277265826 =
+  {
+    createdAt : Timestamp__301639476;
+    id : Principal;
+    var isActive : Bool;
+    var lastLoginAt : ?Timestamp__301639476;
+    role : Role__300349085;
+    var username : Text
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable auditLogs :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AuditLog__107614339]];
+      var elementIndex : Nat__490723111
+    };
+  stable categories :
+    {
+      var root : Node__46230540<EntityId__892221652, Category__296027041>;
+      var size : Nat__490723111
+    };
+  stable grns :
+    {
+      var root : Node__46230540<EntityId__892221652, GRNEntry__277754363>;
+      var size : Nat__490723111
+    };
+  stable issues :
+    {
+      var root : Node__46230540<EntityId__892221652, IssueEntry__456880918>;
+      var size : Nat__490723111
+    };
+  stable items :
+    {
+      var root : Node__46230540<EntityId__892221652, Item__531123396>;
+      var size : Nat__490723111
+    };
+  stable nextAuditLogIdRef : {var value : Nat};
+  stable nextCategoryIdRef : {var value : Nat};
+  stable nextGrnIdRef : {var value : Nat};
+  stable nextIssueIdRef : {var value : Nat};
+  stable nextItemIdRef : {var value : Nat};
+  stable nextSupplierIdRef : {var value : Nat};
+  stable nextTxIdRef : {var value : Nat};
+  stable stockTransactions :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?StockTransaction__698148207]];
+      var elementIndex : Nat__490723111
+    };
+  stable suppliers :
+    {
+      var root : Node__46230540<EntityId__892221652, Supplier__775988836>;
+      var size : Nat__490723111
+    };
+  stable userProfiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__277265826>;
+      var size : Nat__490723111
+    }
+};

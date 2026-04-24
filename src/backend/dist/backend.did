@@ -1,0 +1,318 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfilePublic = 
+ record {
+   createdAt: Timestamp;
+   id: principal;
+   isActive: bool;
+   lastLoginAt: opt Timestamp;
+   role: Role;
+   username: text;
+ };
+type UpdateSupplierRequest = 
+ record {
+   address: text;
+   contactPerson: text;
+   email: text;
+   gstin: text;
+   name: text;
+   phone: text;
+ };
+type UpdateItemRequest = 
+ record {
+   brand: text;
+   category: text;
+   description: text;
+   gstHsn: text;
+   minimumStock: nat;
+   name: text;
+   photo: opt ExternalBlob;
+   preferredSupplier: text;
+   rackLocation: text;
+   size: text;
+   subcategory: text;
+   unit: text;
+ };
+type TransactionType = 
+ variant {
+   inward;
+   issue;
+ };
+type Timestamp = int;
+type SupplierPublic = 
+ record {
+   address: text;
+   contactPerson: text;
+   createdAt: Timestamp;
+   email: text;
+   gstin: text;
+   id: EntityId;
+   ledgerBalance: float64;
+   name: text;
+   phone: text;
+ };
+type StockTransaction = 
+ record {
+   balanceAfter: nat;
+   createdAt: Timestamp;
+   id: EntityId;
+   itemId: EntityId;
+   qty: nat;
+   refId: EntityId;
+   transactionType: TransactionType;
+ };
+type Role = 
+ variant {
+   admin;
+   manager;
+   purchaseUser;
+   storeUser;
+ };
+type QCStatus = 
+ variant {
+   approved;
+   pending;
+   rejected;
+ };
+type MonthlyConsumption = 
+ record {
+   month: text;
+   totalQty: nat;
+   totalValue: float64;
+ };
+type ItemUsageStat = 
+ record {
+   itemCode: text;
+   itemId: EntityId;
+   itemName: text;
+   totalQty: nat;
+ };
+type ItemPublic = 
+ record {
+   brand: text;
+   category: text;
+   code: text;
+   createdAt: Timestamp;
+   currentStock: nat;
+   description: text;
+   gstHsn: text;
+   id: EntityId;
+   isActive: bool;
+   lastPurchaseRate: float64;
+   minimumStock: nat;
+   name: text;
+   photo: opt ExternalBlob;
+   preferredSupplier: text;
+   rackLocation: text;
+   size: text;
+   subcategory: text;
+   unit: text;
+   updatedAt: Timestamp;
+ };
+type IssueType = 
+ variant {
+   directConsumable;
+   emergencyBreakdown;
+   normal;
+ };
+type IssueLineItem = 
+ record {
+   itemCode: text;
+   itemId: EntityId;
+   qty: nat;
+ };
+type IssueEntryPublic = 
+ record {
+   createdAt: Timestamp;
+   date: Timestamp;
+   department: text;
+   id: EntityId;
+   issueSlipNo: text;
+   issueType: IssueType;
+   issuedBy: text;
+   items: vec IssueLineItem;
+   machineName: text;
+   purpose: text;
+   requestedBy: text;
+   status: text;
+ };
+type GRNLineItem = 
+ record {
+   gstPercent: float64;
+   itemCode: text;
+   itemId: EntityId;
+   qty: nat;
+   rate: float64;
+   total: float64;
+ };
+type GRNEntryPublic = 
+ record {
+   challanNo: text;
+   createdAt: Timestamp;
+   createdBy: text;
+   date: Timestamp;
+   grnNo: text;
+   id: EntityId;
+   invoiceNo: text;
+   items: vec GRNLineItem;
+   qcStatus: QCStatus;
+   supplierId: EntityId;
+ };
+type ExternalBlob = blob;
+type EntityId = nat;
+type DeptConsumptionStat = 
+ record {
+   department: text;
+   totalQty: nat;
+   totalValue: float64;
+ };
+type DashboardStats = 
+ record {
+   currentStockValue: float64;
+   lowStockCount: nat;
+   nonMovingCount: nat;
+   todayInwardCount: nat;
+   todayIssueCount: nat;
+   totalActiveItems: nat;
+ };
+type CategoryPublic = 
+ record {
+   createdAt: Timestamp;
+   id: EntityId;
+   name: text;
+   subcategories: vec text;
+ };
+type AuditLog = 
+ record {
+   action: text;
+   entityId: EntityId;
+   id: EntityId;
+   moduleName: text;
+   newValue: text;
+   oldValue: text;
+   timestamp: Timestamp;
+   userId: principal;
+ };
+type AddSupplierRequest = 
+ record {
+   address: text;
+   contactPerson: text;
+   email: text;
+   gstin: text;
+   name: text;
+   phone: text;
+ };
+type AddItemRequest = 
+ record {
+   brand: text;
+   category: text;
+   code: text;
+   description: text;
+   gstHsn: text;
+   minimumStock: nat;
+   name: text;
+   photo: opt ExternalBlob;
+   preferredSupplier: text;
+   rackLocation: text;
+   size: text;
+   subcategory: text;
+   unit: text;
+ };
+type AddIssueRequest = 
+ record {
+   department: text;
+   issueType: IssueType;
+   items: vec IssueLineItem;
+   machineName: text;
+   purpose: text;
+   requestedBy: text;
+ };
+type AddGRNRequest = 
+ record {
+   challanNo: text;
+   date: Timestamp;
+   invoiceNo: text;
+   items: vec GRNLineItem;
+   qcStatus: QCStatus;
+   supplierId: EntityId;
+ };
+type AddCategoryRequest = 
+ record {
+   name: text;
+   subcategories: vec text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  addCategory: (req: AddCategoryRequest) -> (EntityId);
+  addGRN: (req: AddGRNRequest) -> (EntityId);
+  addIssue: (req: AddIssueRequest) -> (EntityId);
+  addItem: (req: AddItemRequest) -> (EntityId);
+  addSupplier: (req: AddSupplierRequest) -> (EntityId);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deactivateItem: (id: EntityId) -> (bool);
+  deactivateUser: (userId: principal) -> (bool);
+  deleteCategory: (id: EntityId) -> (bool);
+  deleteSupplier: (id: EntityId) -> (bool);
+  getAuditLogs: () -> (vec AuditLog) query;
+  getCallerUserProfile: () -> (opt UserProfilePublic) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getCurrentStock: () -> (vec ItemPublic) query;
+  getDashboardStats: () -> (DashboardStats) query;
+  getDeadStockReport: (thresholdDays: nat) -> (vec ItemPublic) query;
+  getDeptConsumption: () -> (vec DeptConsumptionStat) query;
+  getDeptConsumptionReport: (fromTs: Timestamp, toTs: Timestamp) ->
+   (vec DeptConsumptionStat) query;
+  getGRN: (id: EntityId) -> (opt GRNEntryPublic) query;
+  getIssue: (id: EntityId) -> (opt IssueEntryPublic) query;
+  getItem: (id: EntityId) -> (opt ItemPublic) query;
+  getItemLedger: (itemId: EntityId) -> (vec StockTransaction) query;
+  getItemLedgerReport: (itemId: EntityId) -> (vec StockTransaction) query;
+  getLowStockItems: () -> (vec ItemPublic) query;
+  getLowStockReport: () -> (vec ItemPublic) query;
+  getMonthlyConsumption: (months: nat) -> (vec MonthlyConsumption) query;
+  getMonthlyPurchaseReport: (months: nat) -> (vec MonthlyConsumption) query;
+  getSupplier: (id: EntityId) -> (opt SupplierPublic) query;
+  getTopUsedItems: (limit: nat) -> (vec ItemUsageStat) query;
+  getUserProfile: (userId: principal) -> (opt UserProfilePublic) query;
+  isCallerAdmin: () -> (bool) query;
+  listCategories: () -> (vec CategoryPublic) query;
+  listGRNs: () -> (vec GRNEntryPublic) query;
+  listIssues: () -> (vec IssueEntryPublic) query;
+  listItems: () -> (vec ItemPublic) query;
+  listSuppliers: () -> (vec SupplierPublic) query;
+  listUsers: () -> (vec UserProfilePublic) query;
+  saveCallerUserProfile: (username: text) -> ();
+  searchItems: (searchTerm: text) -> (vec ItemPublic) query;
+  updateCategory: (id: EntityId, name: text, subcategories: vec text) ->
+   (bool);
+  updateGRNQCStatus: (id: EntityId, status: QCStatus) -> (bool);
+  updateItem: (id: EntityId, req: UpdateItemRequest) -> (bool);
+  updateSupplier: (id: EntityId, req: UpdateSupplierRequest) -> (bool);
+  uploadItemPhoto: (id: EntityId, photo: ExternalBlob) -> (bool);
+}
